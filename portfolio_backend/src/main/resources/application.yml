@@ -24,7 +24,8 @@ spring:
         format_sql: true
 
 server:
-  port: 8080
+  port: ${PORT:8080}
+
 
 # ─────────────────────────────────────────────────────────────
 # RENDER DEPLOY  — set these as Environment Variables in Render
