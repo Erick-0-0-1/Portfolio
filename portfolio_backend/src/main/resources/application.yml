@@ -1,0 +1,37 @@
+# ─────────────────────────────────────────────────────────────
+#  application.yml  ·  Erick Jay R. Bernal — Portfolio Backend
+# ─────────────────────────────────────────────────────────────
+
+spring:
+  application:
+    name: portfolio-backend
+
+  datasource:
+    # ── Local Development ──────────────────────────────────────
+    # Change YOUR_PASSWORD to your actual PostgreSQL password
+    url: jdbc:postgresql://localhost:5432/portfolio_db
+    username: postgres
+    password: YOUR_PASSWORD
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update        # auto-creates / updates tables
+    show-sql: true            # logs all SQL to console
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+server:
+  port: 8080
+
+# ─────────────────────────────────────────────────────────────
+# RENDER DEPLOY  — set these as Environment Variables in Render
+# dashboard instead of hardcoding them here:
+#
+#   SPRING_DATASOURCE_URL      = jdbc:postgresql://<render-db-host>:5432/<dbname>
+#   SPRING_DATASOURCE_USERNAME = <render-db-user>
+#   SPRING_DATASOURCE_PASSWORD = <render-db-password>
+#   PORT                       = 8080
+# ─────────────────────────────────────────────────────────────

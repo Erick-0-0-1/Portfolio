@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Erick Jay R. Bernal — Full Stack Developer</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --gold: #F5C518;
+      --gold-dim: #c9a012;
+      --gold-glow: rgba(245,197,24,0.18);
+      --bg: #080808;
+      --surface: #101010;
+      --surface2: #161616;
+      --border: rgba(255,255,255,0.07);
+      --text: #f0f0f0;
+      --muted: #666;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── Custom Cursor ─── */
+    #cursor {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      width: 12px; height: 12px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, background .2s;
+      mix-blend-mode: difference;
+    }
+    #cursor-ring {
+      position: fixed; top: 0; left: 0; z-index: 9998;
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%,-50%);
+      transition: width .3s, height .3s, transform .08s;
+      opacity: 0.5;
+    }
+    body:hover #cursor { width: 12px; height: 12px; }
+
+    /* ─── Noise Overlay ─── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; opacity: .35;
+    }
+
+    /* ─── Nav ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 3rem;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      background: rgba(8,8,8,0.8);
+    }
+    .nav-logo {
+      font-size: .85rem; font-weight: 700; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--text);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      font-size: .78rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; padding: .55rem 1.4rem;
+      border: 1.5px solid var(--gold); color: var(--gold);
+      background: transparent; border-radius: 2rem; cursor: none;
+      transition: background .25s, color .25s;
+      font-family: 'Syne', sans-serif;
+      text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--gold); color: #000; }
+
+    /* ─── Sections ─── */
+    section { position: relative; z-index: 1; }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      padding: 7rem 3rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .hero-left { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-family: 'DM Mono', monospace; font-size: .72rem;
+      color: var(--gold); letter-spacing: .15em; text-transform: uppercase;
+      padding: .4rem .9rem;
+      border: 1px solid rgba(245,197,24,0.3);
+      border-radius: 2rem; width: fit-content;
+    }
+    .hero-tag::before { content: '●'; font-size: .5rem; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+    .hero-headline {
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      font-weight: 800; line-height: 1.05;
+      letter-spacing: -.02em;
+    }
+    .hero-headline .gold { color: var(--gold); }
+    .hero-headline .dim { color: var(--muted); }
+
+    .hero-desc {
+      font-family: 'DM Mono', monospace;
+      font-size: .82rem; line-height: 1.85;
+      color: #888; max-width: 400px;
+    }
+
+    .hero-stats {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 1rem; overflow: hidden;
+    }
+    .stat {
+      background: var(--surface);
+      padding: 1.2rem 1.4rem;
+    }
+    .stat-num {
+      font-size: 1.8rem; font-weight: 800; color: var(--gold);
+      line-height: 1; margin-bottom: .3rem;
+    }
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; color: var(--muted); letter-spacing: .1em; text-transform: uppercase;
+    }
+
+    /* ─── Abstract Visual (Hero Right) ─── */
+    .hero-visual {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      overflow: hidden;
+      min-height: 480px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-visual canvas { position: absolute; inset: 0; }
+    .hero-visual-label {
+      position: absolute; bottom: 1.5rem; left: 1.5rem;
+      font-family: 'DM Mono', monospace; font-size: .7rem;
+      color: var(--muted); letter-spacing: .1em; text-transform: uppercase;
+    }
+    .hero-visual-label span { color: var(--gold); }
+
+    /* ─── Location badge ─── */
+    .location-badge {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      padding: .4rem .9rem; border-radius: 2rem;
+      font-family: 'DM Mono', monospace; font-size: .65rem;
+      color: var(--muted); letter-spacing: .08em;
+      display: flex; align-items: center; gap: .4rem;
+    }
+
+    /* ─── PROJECTS ─── */
+    #projects { padding: 6rem 3rem; }
+
+    .section-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 3rem;
+    }
+    .section-eyebrow {
+      font-family: 'DM Mono', monospace; font-size: .72rem;
+      color: var(--gold); letter-spacing: .2em; text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800; letter-spacing: -.02em;
+    }
+    .section-title .dim { color: var(--muted); }
+    .github-link {
+      font-family: 'DM Mono', monospace; font-size: .72rem;
+      color: var(--muted); text-decoration: none; letter-spacing: .1em;
+      border-bottom: 1px solid var(--border); padding-bottom: .2rem;
+      transition: color .25s, border-color .25s;
+    }
+    .github-link:hover { color: var(--gold); border-color: var(--gold); }
+
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 1.5rem; overflow: hidden;
+    }
+    .project-card {
+      background: var(--surface);
+      padding: 2rem; position: relative; overflow: hidden;
+      display: flex; flex-direction: column; gap: 1rem;
+      transition: background .3s;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--gold); transform: scaleX(0); transform-origin: left;
+      transition: transform .4s ease;
+    }
+    .project-card:hover::before { transform: scaleX(1); }
+    .project-card:hover { background: var(--surface2); }
+
+    .project-number {
+      font-family: 'DM Mono', monospace; font-size: .65rem;
+      color: var(--muted); letter-spacing: .1em;
+    }
+    .project-name {
+      font-size: 1.2rem; font-weight: 700; letter-spacing: -.01em;
+    }
+    .project-desc {
+      font-family: 'DM Mono', monospace; font-size: .75rem;
+      color: #777; line-height: 1.7; flex: 1;
+    }
+    .project-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: .8rem; border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    .project-footer-left {
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .footer-dot {
+      width: 8px; height: 8px; border-radius: 50; flex-shrink: 0;
+      background: var(--gold);
+      box-shadow: 0 0 6px rgba(245,197,24,0.6);
+    }
+    .footer-role {
+      font-family: 'DM Mono', monospace; font-size: .62rem;
+      color: var(--gold); letter-spacing: .08em; text-transform: uppercase;
+      font-weight: 400;
+    }
+    .project-link {
+      font-family: 'DM Mono', monospace; font-size: .65rem;
+      color: var(--gold); text-decoration: none; letter-spacing: .08em;
+      text-transform: uppercase;
+      display: flex; align-items: center; gap: .3rem;
+      opacity: 0; transition: opacity .3s;
+    }
+    .project-card:hover .project-link { opacity: 1; }
+    .project-link::after { content: '→'; }
+
+    .project-tags {
+      display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .2rem;
+    }
+    .project-tag {
+      font-family: 'DM Mono', monospace; font-size: .6rem;
+      letter-spacing: .07em; text-transform: uppercase;
+      padding: .25rem .65rem; border-radius: 2rem;
+      border: 1px solid rgba(245,197,24,0.35);
+      color: var(--gold); font-weight: 400;
+      background: rgba(245,197,24,0.06);
+      transition: background .2s, border-color .2s;
+    }
+    .project-card:hover .project-tag { background: rgba(245,197,24,0.12); border-color: rgba(245,197,24,0.55); }
+
+    /* Loading / Error states */
+    #projects-container {
+      min-height: 200px; display: flex; align-items: center; justify-content: center;
+    }
+    .loading-text {
+      font-family: 'DM Mono', monospace; font-size: .8rem; color: var(--muted);
+      letter-spacing: .1em;
+    }
+
+    /* ─── TECH STACK ─── */
+    #stack { padding: 6rem 3rem; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+    /* ─── Categorized Stack ─── */
+    .stack-categories { display: flex; flex-direction: column; gap: 2.5rem; margin-top: 3rem; }
+
+    .stack-category-label {
+      display: flex; align-items: center; gap: 1rem;
+      font-family: 'DM Mono', monospace; font-size: .68rem;
+      color: var(--gold); letter-spacing: .18em; text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .stack-category-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .cat-badge {
+      background: rgba(245,197,24,0.08); border: 1px solid rgba(245,197,24,0.2);
+      padding: .25rem .7rem; border-radius: 2rem; white-space: nowrap;
+    }
+    .stack-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 1rem; overflow: hidden;
+    }
+    .tech-item {
+      background: var(--surface2);
+      padding: 1.4rem 1rem;
+      display: flex; flex-direction: column; align-items: center; gap: .6rem;
+      transition: background .3s;
+      cursor: default; position: relative;
+    }
+    .tech-item.expert::after {
+      content: 'EXPERT';
+      position: absolute; top: .5rem; right: .5rem;
+      font-family: 'DM Mono', monospace; font-size: .5rem;
+      color: var(--gold); letter-spacing: .1em;
+      background: rgba(245,197,24,0.1); padding: .15rem .4rem; border-radius: 2rem;
+    }
+    .tech-item:hover { background: #1c1c1c; }
+    .tech-icon { font-size: 1.8rem; line-height: 1; }
+    .tech-name {
+      font-family: 'DM Mono', monospace; font-size: .63rem;
+      color: var(--muted); letter-spacing: .06em; text-transform: uppercase;
+      text-align: center;
+    }
+    .tech-item:hover .tech-name { color: var(--gold); }
+
+    /* Marquee */
+    .marquee-wrapper {
+      overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 1rem 0; margin: 2rem 0; background: #050505;
+    }
+    .marquee-track {
+      display: flex; gap: 3rem; width: max-content;
+      animation: marquee 20s linear infinite;
+    }
+    .marquee-item {
+      font-family: 'DM Mono', monospace; font-size: .7rem;
+      color: var(--muted); letter-spacing: .15em; text-transform: uppercase;
+      white-space: nowrap; display: flex; align-items: center; gap: 1rem;
+    }
+    .marquee-item::after { content: '✦'; color: var(--gold); }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* ─── CONTACT ─── */
+    #contact { padding: 6rem 3rem 4rem; }
+
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    .contact-left {
+      display: flex; flex-direction: column; gap: 2rem;
+    }
+    .contact-intro {
+      font-family: 'DM Mono', monospace; font-size: .82rem;
+      color: #777; line-height: 1.9;
+    }
+
+    .social-links { display: flex; flex-direction: column; gap: .8rem; }
+    .social-link {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.2rem;
+      border: 1px solid var(--border); border-radius: .75rem;
+      text-decoration: none; color: var(--text);
+      transition: border-color .3s, background .3s;
+      background: var(--surface);
+    }
+    .social-link:hover { border-color: var(--gold); background: var(--surface2); }
+    .social-link-left { display: flex; align-items: center; gap: .8rem; }
+    .social-icon { font-size: 1.1rem; }
+    .social-label { font-size: .85rem; font-weight: 600; }
+    .social-handle {
+      font-family: 'DM Mono', monospace; font-size: .7rem; color: var(--muted);
+    }
+    .social-arrow { color: var(--muted); transition: transform .3s, color .3s; }
+    .social-link:hover .social-arrow { transform: translate(3px,-3px); color: var(--gold); }
+
+    /* Contact Form */
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: .5rem; }
+    .form-label {
+      font-family: 'DM Mono', monospace; font-size: .65rem;
+      color: var(--muted); letter-spacing: .12em; text-transform: uppercase;
+    }
+    .form-input, .form-textarea {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: .75rem; padding: .9rem 1.1rem;
+      color: var(--text); font-family: 'DM Mono', monospace; font-size: .82rem;
+      outline: none; resize: none;
+      transition: border-color .3s;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: var(--gold); }
+    .form-textarea { min-height: 130px; }
+
+    .form-submit {
+      padding: 1rem 2rem; background: var(--gold); color: #000;
+      border: none; border-radius: 2rem; cursor: none;
+      font-family: 'Syne', sans-serif; font-size: .82rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,197,24,.3); }
+    .form-submit:active { transform: translateY(0); }
+
+    /* ─── Footer ─── */
+    footer {
+      padding: 2rem 3rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative; z-index: 1;
+    }
+    .footer-name {
+      font-family: 'DM Mono', monospace; font-size: .7rem;
+      color: var(--muted); letter-spacing: .1em;
+    }
+    .footer-gold { color: var(--gold); }
+
+    /* ─── Divider line ─── */
+    .section-divider {
+      width: 100%; height: 1px; background: var(--border);
+      margin: 0; position: relative; z-index: 1;
+    }
+
+    /* ─── Scroll Reveal ─── */
+    .reveal { opacity: 0; transform: translateY(30px); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; }
+      .hero-visual { min-height: 300px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      #projects, #stack, #contact { padding: 4rem 1.5rem; }
+      footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ─── NAV ─── -->
+<nav class="reveal-nav">
+  <div class="nav-logo"><span>✦</span> ERICK BERNAL</div>
+  <ul class="nav-links">
+    <li><a href="#hero">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire Me</a>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <!-- Left -->
+  <div class="hero-left">
+    <div class="hero-tag reveal">Available for Freelance</div>
+    <h1 class="hero-headline reveal">
+      Full Stack<br>
+      <span class="dim">Web</span> <span class="gold">Developer</span><br>
+      Based in <span class="gold">PH</span> 🇵🇭
+    </h1>
+    <p class="hero-desc reveal">
+      I'm Erick Jay R. Bernal — building dynamic, responsive & scalable web applications from Makati City. Spring Boot backends. Beautiful frontends. End-to-end.
+    </p>
+    <div class="hero-stats reveal">
+      <div class="stat">
+        <div class="stat-num">12+</div>
+        <div class="stat-label">Repositories</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2+</div>
+        <div class="stat-label">Live Projects</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Tech Stack</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Abstract Visual -->
+  <div class="hero-visual reveal">
+    <canvas id="heroCanvas"></canvas>
+    <div class="location-badge">📍 Makati City, PH</div>
+    <div class="hero-visual-label">
+      <span>ERJ</span> · Full Stack Developer
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ─── PROJECTS ─── -->
+<section id="projects">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">// 02. Selected Work</div>
+      <h2 class="section-title">Recent <span class="dim">Projects</span></h2>
+    </div>
+    <a href="https://github.com/Erick-0-0-1" target="_blank" class="github-link">View all on GitHub ↗</a>
+  </div>
+  <div id="projects-container">
+    <div class="loading-text">Fetching from GitHub...</div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ─── Marquee ─── -->
+<div class="marquee-wrapper">
+  <div class="marquee-track" id="marquee"></div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ─── TECH STACK ─── -->
+<section id="stack">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">// 03. Expertise</div>
+      <h2 class="section-title">My Tech <span class="dim">Stack</span></h2>
+    </div>
+  </div>
+
+  <div class="stack-categories">
+
+    <!-- Core Expertise -->
+    <div class="stack-category-block reveal">
+      <div class="stack-category-label"><span class="cat-badge">⚡ Core Expertise</span></div>
+      <div class="stack-grid">
+        <div class="tech-item expert">
+          <div class="tech-icon">☕</div>
+          <div class="tech-name">Java</div>
+        </div>
+        <div class="tech-item expert">
+          <div class="tech-icon">🍃</div>
+          <div class="tech-name">Spring Boot</div>
+        </div>
+        <div class="tech-item expert">
+          <div class="tech-icon">⚛️</div>
+          <div class="tech-name">React.js</div>
+        </div>
+        <div class="tech-item expert">
+          <div class="tech-icon">🟨</div>
+          <div class="tech-name">JavaScript</div>
+        </div>
+        <div class="tech-item expert">
+          <div class="tech-icon">🎨</div>
+          <div class="tech-name">Tailwind CSS</div>
+        </div>
+        <div class="tech-item expert">
+          <div class="tech-icon">🌐</div>
+          <div class="tech-name">HTML5 & CSS3</div>
+        </div>
+        <div class="tech-item expert">
+          <div class="tech-icon">🐘</div>
+          <div class="tech-name">PHP</div>
+        </div>
+        <div class="tech-item expert">
+          <div class="tech-icon">⚙️</div>
+          <div class="tech-name">C++</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Databases -->
+    <div class="stack-category-block reveal">
+      <div class="stack-category-label"><span class="cat-badge">🗄️ Databases</span></div>
+      <div class="stack-grid">
+        <div class="tech-item">
+          <div class="tech-icon">🐘</div>
+          <div class="tech-name">PostgreSQL</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">🍃</div>
+          <div class="tech-name">MongoDB</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">🔷</div>
+          <div class="tech-name">MySQL</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DevOps & Deployment -->
+    <div class="stack-category-block reveal">
+      <div class="stack-category-label"><span class="cat-badge">🚀 DevOps & Deployment</span></div>
+      <div class="stack-grid">
+        <div class="tech-item expert">
+          <div class="tech-icon">▲</div>
+          <div class="tech-name">Vercel</div>
+        </div>
+        <div class="tech-item expert">
+          <div class="tech-icon">🚀</div>
+          <div class="tech-name">Render</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">🐳</div>
+          <div class="tech-name">Docker</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">🐙</div>
+          <div class="tech-name">Git & GitHub</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">🟢</div>
+          <div class="tech-name">Node.js</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">🦈</div>
+          <div class="tech-name">XAMPP</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">🐉</div>
+          <div class="tech-name">Laragon</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UI/UX & Design -->
+    <div class="stack-category-block reveal">
+      <div class="stack-category-label"><span class="cat-badge">🎨 UI/UX & Design</span></div>
+      <div class="stack-grid">
+        <div class="tech-item">
+          <div class="tech-icon">🖌️</div>
+          <div class="tech-name">Figma</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">🖼️</div>
+          <div class="tech-name">Adobe Photoshop</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">✨</div>
+          <div class="tech-name">Adobe After Effects</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">📐</div>
+          <div class="tech-name">MockFlow</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">🎭</div>
+          <div class="tech-name">Canva</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testing & API Tools -->
+    <div class="stack-category-block reveal">
+      <div class="stack-category-label"><span class="cat-badge">🧪 Testing & API Tools</span></div>
+      <div class="stack-grid">
+        <div class="tech-item">
+          <div class="tech-icon">📮</div>
+          <div class="tech-name">Postman</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">🔬</div>
+          <div class="tech-name">JUnit</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">🛡️</div>
+          <div class="tech-name">Spring Security</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">// 04. Get in Touch</div>
+      <h2 class="section-title">Let's <span class="dim">Connect</span></h2>
+    </div>
+  </div>
+  <div class="contact-grid reveal">
+    <!-- Socials -->
+    <div class="contact-left">
+      <p class="contact-intro">
+        Open to freelance projects, collaborations, and full-time roles. Whether you have a project in mind or just want to say hi — my inbox is always open.
+      </p>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/erick-jay-bernal-187033346/" target="_blank" class="social-link">
+          <div class="social-link-left">
+            <div class="social-icon">💼</div>
+            <div>
+              <div class="social-label">LinkedIn</div>
+              <div class="social-handle">erick-jay-bernal-187033346</div>
+            </div>
+          </div>
+          <div class="social-arrow">↗</div>
+        </a>
+        <a href="https://github.com/Erick-0-0-1" target="_blank" class="social-link">
+          <div class="social-link-left">
+            <div class="social-icon">🐙</div>
+            <div>
+              <div class="social-label">GitHub</div>
+              <div class="social-handle">@Erick-0-0-1</div>
+            </div>
+          </div>
+          <div class="social-arrow">↗</div>
+        </a>
+        <a href="https://www.instagram.com/_erij994/" target="_blank" class="social-link">
+          <div class="social-link-left">
+            <div class="social-icon">📸</div>
+            <div>
+              <div class="social-label">Instagram</div>
+              <div class="social-handle">@_erij994</div>
+            </div>
+          </div>
+          <div class="social-arrow">↗</div>
+        </a>
+        <a href="https://www.facebook.com/" target="_blank" class="social-link">
+          <div class="social-link-left">
+            <div class="social-icon">📘</div>
+            <div>
+              <div class="social-label">Facebook</div>
+              <div class="social-handle">Update with your link</div>
+            </div>
+          </div>
+          <div class="social-arrow">↗</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="contact-form">
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input type="text" class="form-input" placeholder="John Doe" id="form-name"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" placeholder="hello@example.com" id="form-email"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-textarea" placeholder="Tell me about your project..." id="form-message"></textarea>
+      </div>
+      <button class="form-submit" id="submitBtn" onclick="handleSubmit()">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-name">
+    © 2026 <span class="footer-gold">Erick Jay R. Bernal</span> — All rights reserved.
+  </div>
+  <div class="footer-name" style="display:flex;align-items:center;gap:.5rem;">
+    Built with <span class="footer-gold">♥</span> in Makati City, PH
+  </div>
+</footer>
+
+<script>
+  // ─── Cursor ───
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursor-ring');
+  let rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      cursorRing.style.left = e.clientX + 'px';
+      cursorRing.style.top = e.clientY + 'px';
+    }, 60);
+  });
+
+  document.querySelectorAll('a, button, .tech-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      cursorRing.style.width = '50px';
+      cursorRing.style.height = '50px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '12px';
+      cursor.style.height = '12px';
+      cursorRing.style.width = '36px';
+      cursorRing.style.height = '36px';
+    });
+  });
+
+  // ─── Hero Canvas ───
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [], rings = [];
+  const GOLD = '#F5C518';
+  const GOLD_DIM = 'rgba(245,197,24,';
+
+  function resize() {
+    const parent = canvas.parentElement;
+    W = canvas.width = parent.offsetWidth;
+    H = canvas.height = parent.offsetHeight;
+  }
+
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < 60; i++) {
+      particles.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: Math.random() * 1.5 + 0.3,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        o: Math.random() * 0.5 + 0.1
+      });
+    }
+    rings = [
+      { x: W * 0.5, y: H * 0.5, r: 100, speed: 0.004, angle: 0, w: 1 },
+      { x: W * 0.5, y: H * 0.5, r: 160, speed: -0.003, angle: 1, w: 0.6 },
+      { x: W * 0.5, y: H * 0.5, r: 220, speed: 0.002, angle: 2, w: 0.4 },
+    ];
+  }
+
+  function drawFrame() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Radial glow background
+    const grad = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, H * 0.65);
+    grad.addColorStop(0, 'rgba(245,197,24,0.08)');
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Central orb
+    const orb = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, 80);
+    orb.addColorStop(0, 'rgba(245,197,24,0.22)');
+    orb.addColorStop(0.5, 'rgba(245,197,24,0.06)');
+    orb.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = orb;
+    ctx.beginPath();
+    ctx.arc(W/2, H/2, 80, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Grid lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+    ctx.lineWidth = 1;
+    const gridSize = 40;
+    for (let x = 0; x < W; x += gridSize) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    }
+    for (let y = 0; y < H; y += gridSize) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    }
+
+    // Rings
+    const now = Date.now() / 1000;
+    rings.forEach(ring => {
+      ring.angle += ring.speed;
+      ctx.save();
+      ctx.translate(ring.x, ring.y);
+      ctx.rotate(ring.angle);
+      ctx.strokeStyle = GOLD_DIM + ring.w * 0.4 + ')';
+      ctx.lineWidth = ring.w;
+      ctx.setLineDash([8, 16]);
+      ctx.beginPath();
+      ctx.arc(0, 0, ring.r, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Dot on ring
+      const dotX = Math.cos(0) * ring.r;
+      const dotY = Math.sin(0) * ring.r;
+      ctx.fillStyle = GOLD;
+      ctx.shadowColor = GOLD;
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.restore();
+    });
+
+    // Particles
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W;
+      if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H;
+      if (p.y > H) p.y = 0;
+      ctx.fillStyle = GOLD_DIM + p.o + ')';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Center cross
+    ctx.strokeStyle = GOLD_DIM + '0.5)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(W/2 - 15, H/2); ctx.lineTo(W/2 + 15, H/2);
+    ctx.moveTo(W/2, H/2 - 15); ctx.lineTo(W/2, H/2 + 15);
+    ctx.stroke();
+
+    // ERJ initials center
+    ctx.font = 'bold 28px Syne, sans-serif';
+    ctx.fillStyle = 'rgba(245,197,24,0.85)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('ERJ', W/2, H/2);
+
+    requestAnimationFrame(drawFrame);
+  }
+
+  window.addEventListener('resize', () => { resize(); initParticles(); });
+  resize(); initParticles(); drawFrame();
+
+  // ─── GitHub Fetch ───
+  const LANG_COLORS = {
+    JavaScript: '#F7DF1E', TypeScript: '#3178C6', Java: '#B07219',
+    Python: '#3776AB', HTML: '#E34F26', CSS: '#264DE4',
+    PHP: '#777BB4', 'C++': '#00599C', Shell: '#89E051',
+    default: '#888'
+  };
+
+  // Map repo names → extra tech context
+  const REPO_META = {
+    'Coffee-Cal-frontend':  { tags: ['JavaScript', 'HTML5', 'Tailwind CSS', 'React.js'], role: 'Frontend' },
+    'coffee-cal-backend':   { tags: ['Java', 'Spring Boot', 'PostgreSQL', 'REST API'], role: 'Backend' },
+    'Coffee-Cal':           { tags: ['JavaScript', 'Spring Boot', 'PostgreSQL'], role: 'Full Stack' },
+    'farmsmart-frontend':   { tags: ['JavaScript', 'React.js', 'Tailwind CSS'], role: 'Frontend' },
+    'farmsmart-backend':    { tags: ['Java', 'Spring Boot', 'PostgreSQL', 'Docker'], role: 'Backend' },
+    'FarmSmart':            { tags: ['Java', 'Spring Boot', 'MongoDB', 'React.js'], role: 'Full Stack' },
+    'Finals':               { tags: ['CSS', 'HTML5', 'JavaScript'], role: 'Frontend' },
+  };
+
+  function buildTagsHTML(tags) {
+    if (!tags || !tags.length) return '';
+    return `<div class="project-tags">${tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>`;
+  }
+
+  function buildFooterHTML(role, url) {
+    return `
+      <div class="project-footer">
+        <div class="project-footer-left">
+          <span class="footer-dot"></span>
+          <span class="footer-role">${role || 'Project'}</span>
+        </div>
+        <a href="${url}" target="_blank" class="project-link">View Repo</a>
+      </div>
+    `;
+  }
+
+  async function fetchProjects() {
+    const container = document.getElementById('projects-container');
+    try {
+      const res = await fetch('https://api.github.com/users/Erick-0-0-1/repos?sort=updated&per_page=20');
+      if (!res.ok) throw new Error('API error');
+      const repos = await res.json();
+      const filtered = repos.filter(r => !r.fork && r.name !== 'Erick-0-0-1').slice(0, 6);
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="loading-text">No public repos found.</div>';
+        return;
+      }
+
+      container.innerHTML = '<div class="projects-grid" id="projects-grid"></div>';
+      const grid = document.getElementById('projects-grid');
+
+      filtered.forEach((repo, i) => {
+        const desc = repo.description || 'No description provided.';
+        const meta = REPO_META[repo.name] || {};
+        const card = document.createElement('div');
+        card.className = 'project-card reveal';
+        card.innerHTML = `
+          <div class="project-number">/ ${String(i+1).padStart(2,'0')}</div>
+          <div class="project-name">${repo.name}</div>
+          <div class="project-desc">${desc}</div>
+          ${buildTagsHTML(meta.tags)}
+          ${buildFooterHTML(meta.role, repo.html_url)}
+        `;
+        grid.appendChild(card);
+      });
+
+      animateReveal();
+
+    } catch (err) {
+      container.innerHTML = `<div class="projects-grid">${buildFallbackCards()}</div>`;
+    }
+  }
+
+  function buildFallbackCards() {
+    const fallback = [
+      {
+        name: 'Coffee-Cal-frontend',
+        desc: 'Business Coffee Calculator — interactive UI for computing coffee business metrics and pricing.',
+        url: 'https://github.com/Erick-0-0-1',
+        tags: ['React.js', 'JavaScript', 'Tailwind CSS', 'HTML5'], role: 'Frontend'
+      },
+      {
+        name: 'coffee-cal-backend',
+        desc: 'RESTful API powering the Coffee-Cal calculator. Handles business logic, product data, and cost computations.',
+        url: 'https://github.com/Erick-0-0-1',
+        tags: ['Java', 'Spring Boot', 'PostgreSQL', 'REST API'], role: 'Backend'
+      },
+      {
+        name: 'farmsmart-frontend',
+        desc: 'Smart farm management dashboard — responsive UI for monitoring crops, inventory, and farm operations.',
+        url: 'https://github.com/Erick-0-0-1',
+        tags: ['React.js', 'JavaScript', 'Tailwind CSS'], role: 'Frontend'
+      },
+      {
+        name: 'farmsmart-backend',
+        desc: 'Spring Boot API for FarmSmart — handles farm data, user management, and real-time operations via REST.',
+        url: 'https://github.com/Erick-0-0-1',
+        tags: ['Java', 'Spring Boot', 'PostgreSQL', 'Docker'], role: 'Backend'
+      },
+      {
+        name: 'FarmSmart',
+        desc: 'Full-stack agricultural management system with dynamic dashboards and scalable cloud deployment.',
+        url: 'https://github.com/Erick-0-0-1',
+        tags: ['Spring Boot', 'React.js', 'MongoDB', 'Render'], role: 'Full Stack'
+      },
+      {
+        name: 'Coffee-Cal',
+        desc: 'Full-stack Business Coffee Calculator — from cost analysis to product management, built end-to-end.',
+        url: 'https://github.com/Erick-0-0-1',
+        tags: ['JavaScript', 'Spring Boot', 'PostgreSQL', 'Vercel'], role: 'Full Stack'
+      },
+    ];
+    return fallback.map((r, i) => `
+      <div class="project-card reveal">
+        <div class="project-number">/ ${String(i+1).padStart(2,'0')}</div>
+        <div class="project-name">${r.name}</div>
+        <div class="project-desc">${r.desc}</div>
+        <div class="project-tags">
+          ${r.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}
+        </div>
+        <div class="project-footer">
+          <div class="project-footer-left">
+            <span class="footer-dot"></span>
+            <span class="footer-role">${r.role}</span>
+          </div>
+          <a href="${r.url}" target="_blank" class="project-link">View Repo</a>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ─── Marquee ───
+  const techList = ['Java', 'Spring Boot', 'React.js', 'Tailwind CSS', 'PostgreSQL', 'MongoDB', 'Docker', 'JavaScript', 'PHP', 'Node.js', 'Git', 'Vercel'];
+  const track = document.getElementById('marquee');
+  // Duplicate for seamless loop
+  [...techList, ...techList].forEach(t => {
+    const el = document.createElement('div');
+    el.className = 'marquee-item';
+    el.textContent = t;
+    track.appendChild(el);
+  });
+
+  // ─── Contact Form ───
+  async function handleSubmit() {
+    const name = document.getElementById('form-name').value;
+    const email = document.getElementById('form-email').value;
+    const message = document.getElementById('form-message').value;
+    const btn = document.getElementById('submitBtn');
+
+    // 1. Validate fields
+    if (!name || !email || !message) {
+      btn.textContent = 'Fill all fields!';
+      btn.style.background = '#ff4444';
+      setTimeout(() => {
+        btn.textContent = 'Send Message';
+        btn.style.background = 'var(--gold)';
+      }, 2000);
+      return;
+    }
+
+    // 2. Loading state
+    btn.textContent = 'Sending...';
+    btn.style.pointerEvents = 'none';
+
+    // 3. POST to Spring Boot backend
+    try {
+      const response = await fetch('http://localhost:8080/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message })
+      });
+
+      if (response.ok) {
+        btn.textContent = 'Message Sent! ✓';
+        btn.style.background = '#22c55e';
+        document.getElementById('form-name').value = '';
+        document.getElementById('form-email').value = '';
+        document.getElementById('form-message').value = '';
+      } else {
+        throw new Error('Server returned an error');
+      }
+    } catch (error) {
+      console.error('Contact form error:', error);
+      btn.textContent = 'Error! Try Again.';
+      btn.style.background = '#ff4444';
+    }
+
+    // 4. Reset button after 3 seconds
+    setTimeout(() => {
+      btn.textContent = 'Send Message';
+      btn.style.background = 'var(--gold)';
+      btn.style.pointerEvents = 'auto';
+    }, 3000);
+  }
+
+  // ─── GSAP Animations ───
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Nav entry
+  gsap.from('.reveal-nav', { y: -40, opacity: 0, duration: 1.2, ease: 'power4.out' });
+
+  function animateReveal() {
+    document.querySelectorAll('.reveal').forEach(el => {
+      if (el._gsap_done) return;
+      el._gsap_done = true;
+      gsap.to(el, {
+        opacity: 1, y: 0, duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+        }
+      });
+    });
+  }
+
+  // Initial reveal for hero elements (stagger)
+  gsap.to('.hero-left .reveal', {
+    opacity: 1, y: 0, duration: 0.9, stagger: 0.15, delay: 0.4,
+    ease: 'power3.out'
+  });
+  gsap.to('.hero-visual.reveal', {
+    opacity: 1, y: 0, duration: 1.2, delay: 0.7,
+    ease: 'expo.out'
+  });
+
+  // Fetch projects then set up scroll reveals
+  fetchProjects().then(() => {
+    animateReveal();
+  });
+
+  // Set up scroll triggers for the rest
+  animateReveal();
+</script>
+</body>
+</html>

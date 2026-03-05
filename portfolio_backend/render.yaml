@@ -1,0 +1,36 @@
+# ──────────────────────────────────────────────────────────────
+#  render.yaml  ·  Erick Jay R. Bernal — Portfolio Deploy Config
+#  Place this file in the ROOT of your backend/ folder
+#  Then connect your GitHub repo on render.com
+# ──────────────────────────────────────────────────────────────
+
+services:
+  # ── Spring Boot Web Service ────────────────────────────────
+  - type: web
+    name: erick-portfolio-backend
+    runtime: java
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/portfolio-0.0.1-SNAPSHOT.jar
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: erick-portfolio-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: erick-portfolio-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: erick-portfolio-db
+          property: password
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+
+  # ── PostgreSQL Database ────────────────────────────────────
+databases:
+  - name: erick-portfolio-db
+    plan: free
+    databaseName: portfolio_db
+    user: erick_admin
