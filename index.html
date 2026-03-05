@@ -1103,7 +1103,11 @@
 
     // 3. POST to Spring Boot backend
     try {
-      const response = await fetch('http://localhost:8080/api/contact', {
+      const API_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:8080' 
+    : 'https://erick-portfolio-backend.onrender.com';  // ← your Render URL
+
+const response = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, message })

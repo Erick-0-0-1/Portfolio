@@ -233,7 +233,9 @@
 <div id="toast"></div>
 
 <script>
-  const API = 'http://localhost:8080/api/contact';
+const API = window.location.hostname === 'localhost'
+    ? 'http://localhost:8080/api/contact'
+    : 'https://erick-portfolio-backend.onrender.com/api/contact';
   let ADMIN_KEY = '';
 
   // ── Login ────────────────────────────────────────────────
