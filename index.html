@@ -125,6 +125,7 @@
       padding: .4rem .9rem;
       border: 1px solid rgba(245,197,24,0.3);
       border-radius: 2rem; width: fit-content;
+      max-width: 100%; line-height: 1.5; flex-wrap: wrap;
     }
     .hero-tag::before { content: '●'; font-size: .5rem; animation: blink 1.5s infinite; }
     @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
@@ -225,6 +226,8 @@
       padding: 2rem; position: relative; overflow: hidden;
       display: flex; flex-direction: column; gap: 1rem;
       transition: background .3s;
+      min-height: 360px;
+      cursor: none;
     }
     .project-card::before {
       content: '';
@@ -239,12 +242,48 @@
       font-family: 'DM Mono', monospace; font-size: .65rem;
       color: var(--muted); letter-spacing: .1em;
     }
+    .project-top {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+    }
+    .project-kicker {
+      font-family: 'DM Mono', monospace; font-size: .58rem;
+      color: var(--gold); letter-spacing: .12em; text-transform: uppercase;
+      line-height: 1.5;
+    }
     .project-name {
-      font-size: 1.2rem; font-weight: 700; letter-spacing: -.01em;
+      font-size: 1.35rem; font-weight: 700; letter-spacing: -.01em;
     }
     .project-desc {
       font-family: 'DM Mono', monospace; font-size: .75rem;
       color: #777; line-height: 1.7; flex: 1;
+    }
+    .project-metrics {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .7rem; margin-top: .2rem;
+    }
+    .project-metric {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      padding: .75rem; border-radius: .75rem;
+    }
+    .project-metric strong {
+      display: block; color: var(--text); font-size: .92rem; margin-bottom: .25rem;
+    }
+    .project-metric span {
+      display: block; font-family: 'DM Mono', monospace; font-size: .58rem;
+      color: var(--muted); letter-spacing: .08em; text-transform: uppercase;
+      line-height: 1.45;
+    }
+    .project-feature-preview {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .55rem;
+    }
+    .feature-pill {
+      font-family: 'DM Mono', monospace; font-size: .62rem;
+      color: #aaa; border: 1px solid var(--border);
+      background: rgba(245,197,24,0.04);
+      padding: .55rem .65rem; border-radius: .65rem;
+      line-height: 1.45;
     }
     .project-footer {
       display: flex; align-items: center; justify-content: space-between;
@@ -269,7 +308,7 @@
       color: var(--gold); text-decoration: none; letter-spacing: .08em;
       text-transform: uppercase;
       display: flex; align-items: center; gap: .3rem;
-      opacity: 0; transition: opacity .3s;
+      opacity: .65; transition: opacity .3s;
     }
     .project-card:hover .project-link { opacity: 1; }
     .project-link::after { content: '→'; }
@@ -295,6 +334,100 @@
     .loading-text {
       font-family: 'DM Mono', monospace; font-size: .8rem; color: var(--muted);
       letter-spacing: .1em;
+    }
+
+    .project-modal {
+      position: fixed; inset: 0; z-index: 300;
+      display: none; align-items: center; justify-content: center;
+      padding: 1.5rem; background: rgba(0,0,0,0.78);
+      backdrop-filter: blur(16px);
+    }
+    .project-modal.active { display: flex; }
+    .project-modal-content {
+      width: min(980px, 100%);
+      max-height: 88vh; overflow-y: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.45);
+    }
+    .project-modal-hero {
+      display: grid; grid-template-columns: .95fr 1.25fr;
+      border-bottom: 1px solid var(--border);
+    }
+    .project-modal-aside {
+      min-height: 320px;
+      background: linear-gradient(145deg, rgba(245,197,24,0.16), rgba(255,255,255,0.03));
+      border-right: 1px solid var(--border);
+      padding: 2rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .project-modal-mark {
+      font-size: clamp(3rem, 9vw, 6rem); font-weight: 800;
+      color: var(--gold); line-height: .9; letter-spacing: 0;
+    }
+    .project-modal-stack {
+      display: flex; flex-wrap: wrap; gap: .45rem;
+    }
+    .project-modal-main { padding: 2rem; position: relative; }
+    .modal-close {
+      position: absolute; top: 1.1rem; right: 1.1rem;
+      width: 36px; height: 36px;
+      border-radius: 50%; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04); color: var(--text);
+      font-size: 1.35rem; line-height: 1; cursor: none;
+    }
+    .project-modal-eyebrow {
+      font-family: 'DM Mono', monospace; font-size: .62rem;
+      color: var(--gold); letter-spacing: .14em; text-transform: uppercase;
+      margin-bottom: .8rem;
+    }
+    .project-modal-title {
+      font-size: clamp(2rem, 4vw, 3.3rem); font-weight: 800;
+      letter-spacing: 0; line-height: 1;
+      padding-right: 2rem;
+    }
+    .project-modal-summary {
+      margin-top: 1rem; font-family: 'DM Mono', monospace;
+      color: #888; font-size: .78rem; line-height: 1.8;
+    }
+    .project-modal-actions {
+      display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem;
+    }
+    .project-action {
+      font-family: 'DM Mono', monospace; font-size: .66rem;
+      color: var(--gold); text-decoration: none; letter-spacing: .08em;
+      text-transform: uppercase; padding: .65rem .95rem;
+      border: 1px solid rgba(245,197,24,0.35);
+      border-radius: 2rem; transition: background .2s, color .2s;
+    }
+    .project-action:hover { background: var(--gold); color: #000; }
+    .project-detail-body { padding: 2rem; }
+    .features-heading {
+      font-size: 1rem; font-weight: 700; margin-bottom: 1rem;
+      color: var(--text);
+    }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .8rem;
+    }
+    .feature-item {
+      display: flex; gap: .7rem; align-items: flex-start;
+      padding: .9rem; border: 1px solid var(--border);
+      border-radius: .8rem; background: rgba(255,255,255,0.025);
+    }
+    .feature-icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(245,197,24,0.1); color: var(--gold);
+      font-family: 'DM Mono', monospace; font-size: .7rem; flex-shrink: 0;
+    }
+    .feature-item strong {
+      display: block; font-size: .8rem; margin-bottom: .25rem;
+    }
+    .feature-item span:last-child {
+      display: block; font-family: 'DM Mono', monospace;
+      color: #777; font-size: .68rem; line-height: 1.55;
     }
 
     /* ─── TECH STACK ─── */
@@ -454,7 +587,20 @@
       .hero-visual { min-height: 300px; }
       .contact-grid { grid-template-columns: 1fr; }
       #projects, #stack, #contact { padding: 4rem 1.5rem; }
+      .project-modal-hero { grid-template-columns: 1fr; }
+      .project-modal-aside { min-height: 220px; border-right: 0; border-bottom: 1px solid var(--border); }
       footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
+    }
+
+    @media (max-width: 620px) {
+      .hero-stats, .project-metrics, .project-feature-preview, .features-grid {
+        grid-template-columns: 1fr;
+      }
+      .section-header { align-items: flex-start; flex-direction: column; gap: 1rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card, .project-modal-main, .project-detail-body, .project-modal-aside {
+        padding: 1.35rem;
+      }
     }
   </style>
 </head>
@@ -480,27 +626,27 @@
 <section id="hero">
   <!-- Left -->
   <div class="hero-left">
-    <div class="hero-tag reveal">Available for Freelance</div>
+    <div class="hero-tag reveal">Open to Software Engineering Internships</div>
     <h1 class="hero-headline reveal">
-      Full Stack<br>
-      <span class="dim">Web</span> <span class="gold">Developer</span><br>
-      Based in <span class="gold">PH</span> 🇵🇭
+      React +<br>
+      <span class="dim">Spring Boot</span> <span class="gold">Developer</span><br>
+      Based in <span class="gold">Makati</span>
     </h1>
     <p class="hero-desc reveal">
-      I'm Erick Jay R. Bernal — building dynamic, responsive & scalable web applications from Makati City. Spring Boot backends. Beautiful frontends. End-to-end.
+      I'm Erick Jay R. Bernal, a BS IT Web Development student building cloud-deployed full-stack apps with React, Spring Boot, PostgreSQL, Docker, and CI/CD.
     </p>
     <div class="hero-stats reveal">
       <div class="stat">
-        <div class="stat-num">12+</div>
-        <div class="stat-label">Repositories</div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">Selected Apps</div>
       </div>
       <div class="stat">
-        <div class="stat-num">2+</div>
-        <div class="stat-label">Live Projects</div>
+        <div class="stat-num">&lt;1s</div>
+        <div class="stat-label">Pricing Engine</div>
       </div>
       <div class="stat">
-        <div class="stat-num">5+</div>
-        <div class="stat-label">Tech Stack</div>
+        <div class="stat-num">2027</div>
+        <div class="stat-label">BS IT Expected</div>
       </div>
     </div>
   </div>
@@ -527,9 +673,34 @@
     <a href="https://github.com/Erick-0-0-1" target="_blank" class="github-link">View all on GitHub ↗</a>
   </div>
   <div id="projects-container">
-    <div class="loading-text">Fetching from GitHub...</div>
+    <div class="loading-text">Preparing selected work...</div>
   </div>
 </section>
+
+<div class="project-modal" id="projectModal" aria-hidden="true">
+  <div class="project-modal-content" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
+    <div class="project-modal-hero">
+      <div class="project-modal-aside">
+        <div>
+          <div class="project-number" id="projectModalNumber">/ 01</div>
+          <div class="project-modal-mark" id="projectModalMark">TG</div>
+        </div>
+        <div class="project-modal-stack" id="projectModalTags"></div>
+      </div>
+      <div class="project-modal-main">
+        <button class="modal-close" type="button" onclick="closeProjectModal()" aria-label="Close project details">&times;</button>
+        <div class="project-modal-eyebrow" id="projectModalRole">Frontend Platform</div>
+        <h3 class="project-modal-title" id="projectModalTitle">The Grid</h3>
+        <p class="project-modal-summary" id="projectModalSummary"></p>
+        <div class="project-modal-actions" id="projectModalActions"></div>
+      </div>
+    </div>
+    <div class="project-detail-body">
+      <h4 class="features-heading">Features & Build Highlights</h4>
+      <div class="features-grid" id="projectModalFeatures"></div>
+    </div>
+  </div>
+</div>
 
 <div class="section-divider"></div>
 
@@ -707,7 +878,7 @@
     <!-- Socials -->
     <div class="contact-left">
       <p class="contact-intro">
-        Open to freelance projects, collaborations, and full-time roles. Whether you have a project in mind or just want to say hi — my inbox is always open.
+        Seeking a software engineering internship where I can contribute to scalable backend and full-stack systems. I am also open to freelance builds, collaborations, and practical tools that remove manual work.
       </p>
       <div class="social-links">
         <a href="https://www.linkedin.com/in/erick-jay-bernal-187033346/" target="_blank" class="social-link">
@@ -936,24 +1107,75 @@
   window.addEventListener('resize', () => { resize(); initParticles(); });
   resize(); initParticles(); drawFrame();
 
-  // ─── GitHub Fetch ───
-  const LANG_COLORS = {
-    JavaScript: '#F7DF1E', TypeScript: '#3178C6', Java: '#B07219',
-    Python: '#3776AB', HTML: '#E34F26', CSS: '#264DE4',
-    PHP: '#777BB4', 'C++': '#00599C', Shell: '#89E051',
-    default: '#888'
-  };
-
-  // Map repo names → extra tech context
-  const REPO_META = {
-    'Coffee-Cal-frontend':  { tags: ['JavaScript', 'HTML5', 'Tailwind CSS', 'React.js'], role: 'Frontend' },
-    'coffee-cal-backend':   { tags: ['Java', 'Spring Boot', 'PostgreSQL', 'REST API'], role: 'Backend' },
-    'Coffee-Cal':           { tags: ['JavaScript', 'Spring Boot', 'PostgreSQL'], role: 'Full Stack' },
-    'farmsmart-frontend':   { tags: ['JavaScript', 'React.js', 'Tailwind CSS'], role: 'Frontend' },
-    'farmsmart-backend':    { tags: ['Java', 'Spring Boot', 'PostgreSQL', 'Docker'], role: 'Backend' },
-    'FarmSmart':            { tags: ['Java', 'Spring Boot', 'MongoDB', 'React.js'], role: 'Full Stack' },
-    'Finals':               { tags: ['CSS', 'HTML5', 'JavaScript'], role: 'Frontend' },
-  };
+  // ─── Curated Projects ───
+  const PROJECTS = [
+    {
+      id: 'the-grid',
+      mark: 'TG',
+      name: 'The Grid',
+      role: 'Client Frontend Platform',
+      timeline: '2025 - Present',
+      summary: 'A responsive co-living website for a real estate client, built with custom HTML, CSS, and JavaScript. The experience includes an auto-advancing hero slider, bilingual content switching, amenity cards, and interactive detail modals.',
+      tags: ['HTML5', 'CSS3', 'JavaScript', 'Vercel'],
+      repo: 'https://github.com/Erick-0-0-1/The-Grid',
+      live: 'https://the-grid-seven.vercel.app',
+      metrics: [
+        { value: '2 langs', label: 'English and Tagalog UI' },
+        { value: '4 modals', label: 'Amenity detail flows' }
+      ],
+      preview: ['Hero slider', 'Amenity modals', 'Language switcher', 'Newsletter form'],
+      features: [
+        { icon: '01', title: 'Auto-Advancing Hero Slider', text: 'Built a polished landing experience with timed slide transitions, navigation controls, and strong first-viewport messaging.' },
+        { icon: '02', title: 'Amenities Experience', text: 'Created clickable facility cards that open focused modal views for rooms, gym, lounge, and rooftop pool details.' },
+        { icon: '03', title: 'Bilingual Content Support', text: 'Implemented English and Tagalog switching with vanilla JavaScript, keeping the site lightweight without external i18n libraries.' },
+        { icon: '04', title: 'Responsive Custom CSS', text: 'Designed mobile-ready grids, modal overlays, and smooth transitions without relying on a component framework.' }
+      ]
+    },
+    {
+      id: 'farmsmart',
+      mark: 'FS',
+      name: 'FarmSmart',
+      role: 'Full-Stack Farm Operations Platform',
+      timeline: '2025 - Present',
+      summary: 'A full-stack farm operations platform for inventory tracking and crop lifecycle management, built with React, Spring Boot, PostgreSQL, Docker, and Render deployment.',
+      tags: ['React', 'Spring Boot', 'PostgreSQL', 'Docker', 'Render'],
+      repo: 'https://github.com/Erick-0-0-1/FarmSmart',
+      live: 'https://farm-smart-pi.vercel.app',
+      metrics: [
+        { value: 'CI/CD', label: 'Automated Render deploys' },
+        { value: 'Layered', label: 'Controller service repository' }
+      ],
+      preview: ['Inventory tracking', 'Crop lifecycle', 'Docker backend', 'PostgreSQL schema'],
+      features: [
+        { icon: '01', title: 'Inventory Tracking', text: 'Built workflows for managing farm resources and operational records through a responsive React interface.' },
+        { icon: '02', title: 'Crop Lifecycle Management', text: 'Modeled crop stages and farm data so users can track real production activity instead of relying on paperwork.' },
+        { icon: '03', title: 'Layered Spring Boot API', text: 'Structured the backend around controllers, services, and repositories for maintainable and testable business logic.' },
+        { icon: '04', title: 'Cloud Deployment Pipeline', text: 'Containerized the backend with Docker and automated deployment to Render through GitHub CI/CD.' }
+      ]
+    },
+    {
+      id: 'coffee-cal',
+      mark: 'CC',
+      name: 'Coffee-Cal',
+      role: 'Full-Stack Coffee Shop Profit Calculator',
+      timeline: '2026 - Present',
+      summary: 'A pricing engine that helps coffee shops model product margins in real time. It replaces manual spreadsheet work with instant calculations powered by React, Spring Boot, JPA, and PostgreSQL.',
+      tags: ['React', 'Spring Boot', 'PostgreSQL', 'Tailwind CSS', 'Vercel', 'Render'],
+      repo: 'https://github.com/Erick-0-0-1/Coffee-Cal',
+      live: '',
+      metrics: [
+        { value: '&lt;1s', label: 'Margin computation' },
+        { value: '15 min', label: 'Spreadsheet work removed' }
+      ],
+      preview: ['Pricing engine', 'Margin modeling', 'REST APIs', 'JPA schema'],
+      features: [
+        { icon: '01', title: 'Real-Time Margin Modeling', text: 'Built product pricing flows that update coffee shop profit estimates instantly as cost inputs change.' },
+        { icon: '02', title: 'Spreadsheet Replacement', text: 'Reduced repetitive manual calculations from roughly 15 minutes to near-instant computation.' },
+        { icon: '03', title: 'REST API Design', text: 'Designed Spring Boot endpoints and service logic for product costs, pricing rules, and margin calculations.' },
+        { icon: '04', title: 'Relational Data Model', text: 'Used PostgreSQL with JPA entities to keep product, ingredient, and pricing data structured for future growth.' }
+      ]
+    }
+  ];
 
   function buildTagsHTML(tags) {
     if (!tags || !tags.length) return '';
@@ -972,100 +1194,87 @@
     `;
   }
 
-  async function fetchProjects() {
+  function renderProjects() {
     const container = document.getElementById('projects-container');
-    try {
-      const res = await fetch('https://api.github.com/users/Erick-0-0-1/repos?sort=updated&per_page=20');
-      if (!res.ok) throw new Error('API error');
-      const repos = await res.json();
-      const filtered = repos.filter(r => !r.fork && r.name !== 'Erick-0-0-1').slice(0, 6);
+    container.innerHTML = '<div class="projects-grid" id="projects-grid"></div>';
+    const grid = document.getElementById('projects-grid');
 
-      if (filtered.length === 0) {
-        container.innerHTML = '<div class="loading-text">No public repos found.</div>';
-        return;
-      }
-
-      container.innerHTML = '<div class="projects-grid" id="projects-grid"></div>';
-      const grid = document.getElementById('projects-grid');
-
-      filtered.forEach((repo, i) => {
-        const desc = repo.description || 'No description provided.';
-        const meta = REPO_META[repo.name] || {};
-        const card = document.createElement('div');
-        card.className = 'project-card reveal';
-        card.innerHTML = `
-          <div class="project-number">/ ${String(i+1).padStart(2,'0')}</div>
-          <div class="project-name">${repo.name}</div>
-          <div class="project-desc">${desc}</div>
-          ${buildTagsHTML(meta.tags)}
-          ${buildFooterHTML(meta.role, repo.html_url)}
-        `;
-        grid.appendChild(card);
+    PROJECTS.forEach((project, i) => {
+      const card = document.createElement('article');
+      card.className = 'project-card reveal';
+      card.tabIndex = 0;
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-label', `Open ${project.name} project details`);
+      card.dataset.projectId = project.id;
+      card.innerHTML = `
+        <div class="project-top">
+          <div>
+            <div class="project-number">/ ${String(i+1).padStart(2,'0')}</div>
+            <div class="project-name">${project.name}</div>
+          </div>
+          <div class="project-kicker">${project.timeline}<br>${project.role}</div>
+        </div>
+        <div class="project-desc">${project.summary}</div>
+        <div class="project-metrics">
+          ${project.metrics.map(m => `<div class="project-metric"><strong>${m.value}</strong><span>${m.label}</span></div>`).join('')}
+        </div>
+        <div class="project-feature-preview">
+          ${project.preview.map(item => `<div class="feature-pill">${item}</div>`).join('')}
+        </div>
+        ${buildTagsHTML(project.tags)}
+        ${buildFooterHTML(project.role, project.repo)}
+      `;
+      card.addEventListener('click', (event) => {
+        if (event.target.closest('a')) return;
+        openProjectModal(project.id);
       });
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openProjectModal(project.id);
+        }
+      });
+      grid.appendChild(card);
+    });
 
-      animateReveal();
-
-    } catch (err) {
-      container.innerHTML = `<div class="projects-grid">${buildFallbackCards()}</div>`;
-    }
+    animateReveal();
   }
 
-  function buildFallbackCards() {
-    const fallback = [
-      {
-        name: 'Coffee-Cal-frontend',
-        desc: 'Business Coffee Calculator — interactive UI for computing coffee business metrics and pricing.',
-        url: 'https://github.com/Erick-0-0-1',
-        tags: ['React.js', 'JavaScript', 'Tailwind CSS', 'HTML5'], role: 'Frontend'
-      },
-      {
-        name: 'coffee-cal-backend',
-        desc: 'RESTful API powering the Coffee-Cal calculator. Handles business logic, product data, and cost computations.',
-        url: 'https://github.com/Erick-0-0-1',
-        tags: ['Java', 'Spring Boot', 'PostgreSQL', 'REST API'], role: 'Backend'
-      },
-      {
-        name: 'farmsmart-frontend',
-        desc: 'Smart farm management dashboard — responsive UI for monitoring crops, inventory, and farm operations.',
-        url: 'https://github.com/Erick-0-0-1',
-        tags: ['React.js', 'JavaScript', 'Tailwind CSS'], role: 'Frontend'
-      },
-      {
-        name: 'farmsmart-backend',
-        desc: 'Spring Boot API for FarmSmart — handles farm data, user management, and real-time operations via REST.',
-        url: 'https://github.com/Erick-0-0-1',
-        tags: ['Java', 'Spring Boot', 'PostgreSQL', 'Docker'], role: 'Backend'
-      },
-      {
-        name: 'FarmSmart',
-        desc: 'Full-stack agricultural management system with dynamic dashboards and scalable cloud deployment.',
-        url: 'https://github.com/Erick-0-0-1',
-        tags: ['Spring Boot', 'React.js', 'MongoDB', 'Render'], role: 'Full Stack'
-      },
-      {
-        name: 'Coffee-Cal',
-        desc: 'Full-stack Business Coffee Calculator — from cost analysis to product management, built end-to-end.',
-        url: 'https://github.com/Erick-0-0-1',
-        tags: ['JavaScript', 'Spring Boot', 'PostgreSQL', 'Vercel'], role: 'Full Stack'
-      },
-    ];
-    return fallback.map((r, i) => `
-      <div class="project-card reveal">
-        <div class="project-number">/ ${String(i+1).padStart(2,'0')}</div>
-        <div class="project-name">${r.name}</div>
-        <div class="project-desc">${r.desc}</div>
-        <div class="project-tags">
-          ${r.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}
-        </div>
-        <div class="project-footer">
-          <div class="project-footer-left">
-            <span class="footer-dot"></span>
-            <span class="footer-role">${r.role}</span>
-          </div>
-          <a href="${r.url}" target="_blank" class="project-link">View Repo</a>
-        </div>
+  function openProjectModal(projectId) {
+    const project = PROJECTS.find(p => p.id === projectId);
+    if (!project) return;
+
+    const projectIndex = PROJECTS.findIndex(p => p.id === projectId) + 1;
+    document.getElementById('projectModalNumber').textContent = `/ ${String(projectIndex).padStart(2,'0')}`;
+    document.getElementById('projectModalMark').textContent = project.mark;
+    document.getElementById('projectModalRole').textContent = project.role;
+    document.getElementById('projectModalTitle').textContent = project.name;
+    document.getElementById('projectModalSummary').textContent = project.summary;
+    document.getElementById('projectModalTags').innerHTML = project.tags.map(t => `<span class="project-tag">${t}</span>`).join('');
+    document.getElementById('projectModalFeatures').innerHTML = project.features.map(feature => `
+      <div class="feature-item">
+        <span class="feature-icon">${feature.icon}</span>
+        <span><strong>${feature.title}</strong><span>${feature.text}</span></span>
       </div>
     `).join('');
+
+    const actions = [
+      `<a href="${project.repo}" target="_blank" class="project-action">View Repo</a>`,
+      project.live ? `<a href="${project.live}" target="_blank" class="project-action">View Live</a>` : ''
+    ].join('');
+    document.getElementById('projectModalActions').innerHTML = actions;
+
+    const modal = document.getElementById('projectModal');
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeProjectModal() {
+    const modal = document.getElementById('projectModal');
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = 'auto';
   }
 
   // ─── Marquee ───
@@ -1167,9 +1376,15 @@ const response = await fetch(`${API_URL}/api/contact`, {
     ease: 'expo.out'
   });
 
-  // Fetch projects then set up scroll reveals
-  fetchProjects().then(() => {
-    animateReveal();
+  // Render curated case studies, then set up scroll reveals
+  renderProjects();
+
+  document.getElementById('projectModal').addEventListener('click', (event) => {
+    if (event.target.id === 'projectModal') closeProjectModal();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeProjectModal();
   });
 
   // Set up scroll triggers for the rest
