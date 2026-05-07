@@ -201,22 +201,35 @@
 
     .section-header {
       display: flex; align-items: flex-end; justify-content: space-between;
-      margin-bottom: 3rem;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
     }
+    .section-heading-copy { max-width: 620px; }
     .section-eyebrow {
-      font-family: 'DM Mono', monospace; font-size: .68rem;
-      color: var(--gold); letter-spacing: .16em; text-transform: uppercase;
+      font-family: 'DM Mono', monospace; font-size: .64rem;
+      color: var(--gold); letter-spacing: .14em; text-transform: uppercase;
       margin-bottom: .6rem;
     }
     .section-title {
-      font-size: clamp(1.9rem, 3vw, 2.65rem); font-weight: 800; letter-spacing: -.025em;
+      font-size: clamp(1.75rem, 2.6vw, 2.35rem);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1.12;
     }
     .section-title .dim { color: var(--muted); }
+    .section-copy {
+      margin-top: .8rem;
+      max-width: 560px;
+      color: #9b9b9b;
+      font-size: .96rem;
+      line-height: 1.7;
+    }
     .github-link {
-      font-family: 'DM Mono', monospace; font-size: .72rem;
-      color: var(--muted); text-decoration: none; letter-spacing: .1em;
+      font-family: 'DM Mono', monospace; font-size: .66rem;
+      color: var(--muted); text-decoration: none; letter-spacing: .08em;
       border-bottom: 1px solid var(--border); padding-bottom: .2rem;
       transition: color .25s, border-color .25s;
+      flex-shrink: 0;
     }
     .github-link:hover { color: var(--gold); border-color: var(--gold); }
 
@@ -252,8 +265,8 @@
     .project-card:nth-child(even) .project-content { order: 2; }
     .project-card:nth-child(even) .project-visual { order: 1; border-left: 0; border-right: 1px solid var(--border); }
     .project-content {
-      padding: 2rem;
-      display: flex; flex-direction: column; gap: 1rem;
+      padding: 1.8rem;
+      display: flex; flex-direction: column; gap: .95rem;
     }
     .project-visual {
       border-left: 1px solid var(--border);
@@ -280,8 +293,8 @@
       line-height: .85; letter-spacing: 0;
     }
     .project-visual-label {
-      font-family: 'DM Mono', monospace; font-size: .62rem;
-      color: var(--muted); letter-spacing: .12em; text-transform: uppercase;
+      font-family: 'DM Mono', monospace; font-size: .58rem;
+      color: var(--muted); letter-spacing: .1em; text-transform: uppercase;
       margin-top: .8rem; line-height: 1.6;
     }
     .project-visual.has-image .project-visual-label {
@@ -305,8 +318,8 @@
     }
     .project-highlight {
       display: flex; align-items: center; gap: .65rem;
-      font-family: 'DM Mono', monospace; font-size: .68rem;
-      color: #b8b8b8; line-height: 1.45;
+      font-size: .78rem;
+      color: #c9c9c9; line-height: 1.45;
       padding: .7rem .75rem;
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: .75rem;
@@ -327,23 +340,23 @@
     }
 
     .project-number {
-      font-family: 'DM Mono', monospace; font-size: .65rem;
-      color: var(--muted); letter-spacing: .1em;
+      font-family: 'DM Mono', monospace; font-size: .6rem;
+      color: var(--muted); letter-spacing: .08em;
     }
     .project-top {
       display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
     }
     .project-kicker {
-      font-family: 'DM Mono', monospace; font-size: .56rem;
-      color: var(--gold); letter-spacing: .1em; text-transform: uppercase;
+      font-family: 'DM Mono', monospace; font-size: .54rem;
+      color: var(--gold); letter-spacing: .08em; text-transform: uppercase;
       line-height: 1.5;
     }
     .project-name {
-      font-size: clamp(1.2rem, 1.6vw, 1.45rem); font-weight: 700; letter-spacing: -.015em;
+      font-size: clamp(1.15rem, 1.45vw, 1.35rem); font-weight: 700; letter-spacing: -.012em;
     }
     .project-desc {
-      font-size: .93rem;
-      color: #9a9a9a; line-height: 1.72; flex: 1;
+      font-size: .9rem;
+      color: #9d9d9d; line-height: 1.72; flex: 1;
     }
     .project-metrics {
       display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -376,13 +389,13 @@
       box-shadow: 0 0 6px rgba(245,197,24,0.6);
     }
     .footer-role {
-      font-family: 'DM Mono', monospace; font-size: .62rem;
-      color: var(--gold); letter-spacing: .08em; text-transform: uppercase;
+      font-family: 'DM Mono', monospace; font-size: .58rem;
+      color: var(--gold); letter-spacing: .07em; text-transform: uppercase;
       font-weight: 400;
     }
     .project-link {
-      font-family: 'DM Mono', monospace; font-size: .65rem;
-      color: var(--gold); text-decoration: none; letter-spacing: .08em;
+      font-family: 'DM Mono', monospace; font-size: .62rem;
+      color: var(--gold); text-decoration: none; letter-spacing: .07em;
       text-transform: uppercase;
       display: flex; align-items: center; gap: .3rem;
       opacity: .65; transition: opacity .3s;
@@ -394,8 +407,8 @@
       display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .2rem;
     }
     .project-tag {
-      font-family: 'DM Mono', monospace; font-size: .6rem;
-      letter-spacing: .07em; text-transform: uppercase;
+      font-family: 'DM Mono', monospace; font-size: .56rem;
+      letter-spacing: .06em; text-transform: uppercase;
       padding: .25rem .65rem; border-radius: 2rem;
       border: 1px solid rgba(245,197,24,0.35);
       color: var(--gold); font-weight: 400;
@@ -507,29 +520,29 @@
     #stack { padding: 6rem 3rem; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
     /* ─── Categorized Stack ─── */
-    .stack-categories { display: flex; flex-direction: column; gap: 2.5rem; margin-top: 3rem; }
+    .stack-categories { display: flex; flex-direction: column; gap: 2rem; margin-top: 2.5rem; }
 
     .stack-category-label {
       display: flex; align-items: center; gap: 1rem;
-      font-family: 'DM Mono', monospace; font-size: .68rem;
-      color: var(--gold); letter-spacing: .18em; text-transform: uppercase;
-      margin-bottom: 1rem;
+      font-family: 'DM Mono', monospace; font-size: .62rem;
+      color: var(--gold); letter-spacing: .12em; text-transform: uppercase;
+      margin-bottom: .85rem;
     }
     .stack-category-label::after {
       content: ''; flex: 1; height: 1px; background: var(--border);
     }
     .cat-badge {
       background: rgba(245,197,24,0.08); border: 1px solid rgba(245,197,24,0.2);
-      padding: .25rem .7rem; border-radius: 2rem; white-space: nowrap;
+      padding: .28rem .7rem; border-radius: 2rem; white-space: nowrap;
     }
     .stack-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));
       gap: 1px; background: var(--border);
       border: 1px solid var(--border); border-radius: 1rem; overflow: hidden;
     }
     .tech-item {
       background: var(--surface2);
-      padding: 1.4rem 1rem;
+      padding: 1.25rem 1rem;
       display: flex; flex-direction: column; align-items: center; gap: .6rem;
       transition: background .3s;
       cursor: default; position: relative;
@@ -542,11 +555,13 @@
       background: rgba(245,197,24,0.1); padding: .15rem .4rem; border-radius: 2rem;
     }
     .tech-item:hover { background: #1c1c1c; }
-    .tech-icon { font-size: 1.8rem; line-height: 1; }
+    .tech-icon { font-size: 1.55rem; line-height: 1; }
     .tech-name {
-      font-family: 'DM Mono', monospace; font-size: .63rem;
-      color: var(--muted); letter-spacing: .06em; text-transform: uppercase;
+      font-size: .82rem;
+      color: #aaa;
+      letter-spacing: .01em;
       text-align: center;
+      font-weight: 600;
     }
     .tech-item:hover .tech-name { color: var(--gold); }
 
@@ -560,8 +575,8 @@
       animation: marquee 20s linear infinite;
     }
     .marquee-item {
-      font-family: 'DM Mono', monospace; font-size: .7rem;
-      color: var(--muted); letter-spacing: .15em; text-transform: uppercase;
+      font-family: 'DM Mono', monospace; font-size: .64rem;
+      color: var(--muted); letter-spacing: .11em; text-transform: uppercase;
       white-space: nowrap; display: flex; align-items: center; gap: 1rem;
     }
     .marquee-item::after { content: '✦'; color: var(--gold); }
@@ -571,22 +586,23 @@
     #contact { padding: 6rem 3rem 4rem; }
 
     .contact-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
-      margin-top: 3rem;
+      display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); gap: 3rem;
+      margin-top: 2.5rem;
     }
 
     .contact-left {
       display: flex; flex-direction: column; gap: 2rem;
     }
     .contact-intro {
-      font-family: 'DM Mono', monospace; font-size: .82rem;
-      color: #777; line-height: 1.9;
+      font-size: .96rem;
+      color: #9d9d9d; line-height: 1.75;
+      max-width: 560px;
     }
 
     .social-links { display: flex; flex-direction: column; gap: .8rem; }
     .social-link {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 1.2rem;
+      padding: .95rem 1.1rem;
       border: 1px solid var(--border); border-radius: .75rem;
       text-decoration: none; color: var(--text);
       transition: border-color .3s, background .3s;
@@ -595,9 +611,9 @@
     .social-link:hover { border-color: var(--gold); background: var(--surface2); }
     .social-link-left { display: flex; align-items: center; gap: .8rem; }
     .social-icon { font-size: 1.1rem; }
-    .social-label { font-size: .85rem; font-weight: 600; }
+    .social-label { font-size: .9rem; font-weight: 700; }
     .social-handle {
-      font-family: 'DM Mono', monospace; font-size: .7rem; color: var(--muted);
+      font-family: 'DM Mono', monospace; font-size: .66rem; color: var(--muted);
     }
     .social-arrow { color: var(--muted); transition: transform .3s, color .3s; }
     .social-link:hover .social-arrow { transform: translate(3px,-3px); color: var(--gold); }
@@ -607,13 +623,13 @@
 
     .form-group { display: flex; flex-direction: column; gap: .5rem; }
     .form-label {
-      font-family: 'DM Mono', monospace; font-size: .65rem;
-      color: var(--muted); letter-spacing: .12em; text-transform: uppercase;
+      font-family: 'DM Mono', monospace; font-size: .6rem;
+      color: var(--muted); letter-spacing: .1em; text-transform: uppercase;
     }
     .form-input, .form-textarea {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: .75rem; padding: .9rem 1.1rem;
-      color: var(--text); font-family: 'DM Mono', monospace; font-size: .82rem;
+      color: var(--text); font-family: 'Syne', sans-serif; font-size: .95rem;
       outline: none; resize: none;
       transition: border-color .3s;
     }
@@ -623,8 +639,8 @@
     .form-submit {
       padding: 1rem 2rem; background: var(--gold); color: #000;
       border: none; border-radius: 2rem; cursor: none;
-      font-family: 'Syne', sans-serif; font-size: .82rem; font-weight: 700;
-      letter-spacing: .08em; text-transform: uppercase;
+      font-family: 'Syne', sans-serif; font-size: .78rem; font-weight: 700;
+      letter-spacing: .07em; text-transform: uppercase;
       transition: transform .2s, box-shadow .2s;
     }
     .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,197,24,.3); }
@@ -661,6 +677,12 @@
       .hero-visual { min-height: 300px; }
       .contact-grid { grid-template-columns: 1fr; }
       #projects, #stack, #contact { padding: 4rem 1.5rem; }
+      .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
       .project-card,
       .project-card:nth-child(even) {
         grid-template-columns: 1fr;
@@ -690,7 +712,9 @@
       .hero-stats, .project-metrics, .features-grid {
         grid-template-columns: 1fr;
       }
-      .section-header { align-items: flex-start; flex-direction: column; gap: 1rem; }
+      .section-title { font-size: clamp(1.65rem, 9vw, 2.1rem); }
+      .section-copy, .contact-intro, .project-desc { font-size: .9rem; }
+      .stack-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .project-content, .project-visual, .project-modal-main, .project-detail-body, .project-modal-aside {
         padding: 1.35rem;
       }
@@ -759,9 +783,10 @@
 <!-- ─── PROJECTS ─── -->
 <section id="projects">
   <div class="section-header reveal">
-    <div>
+    <div class="section-heading-copy">
       <div class="section-eyebrow">// 02. Selected Work</div>
       <h2 class="section-title">Recent <span class="dim">Projects</span></h2>
+      <p class="section-copy">A focused set of deployed apps showing full-stack delivery, API design, database modeling, and production deployment.</p>
     </div>
     <a href="https://github.com/Erick-0-0-1" target="_blank" class="github-link">View all on GitHub ↗</a>
   </div>
@@ -807,9 +832,10 @@
 <!-- ─── TECH STACK ─── -->
 <section id="stack">
   <div class="section-header reveal">
-    <div>
+    <div class="section-heading-copy">
       <div class="section-eyebrow">// 03. Expertise</div>
       <h2 class="section-title">My Tech <span class="dim">Stack</span></h2>
+      <p class="section-copy">Tools I use to build practical web apps, from responsive interfaces to Spring Boot APIs and cloud deployments.</p>
     </div>
   </div>
 
@@ -962,9 +988,10 @@
 <!-- ─── CONTACT ─── -->
 <section id="contact">
   <div class="section-header reveal">
-    <div>
+    <div class="section-heading-copy">
       <div class="section-eyebrow">// 04. Get in Touch</div>
       <h2 class="section-title">Let's <span class="dim">Connect</span></h2>
+      <p class="section-copy">Open to internships, junior developer opportunities, collaborations, and freelance builds with clear real-world value.</p>
     </div>
   </div>
   <div class="contact-grid reveal">
