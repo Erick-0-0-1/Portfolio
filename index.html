@@ -216,17 +216,18 @@
     }
     .github-link:hover { color: var(--gold); border-color: var(--gold); }
 
-    .projects-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.5px; background: var(--border);
-      border: 1px solid var(--border); border-radius: 1.5rem; overflow: hidden;
+    #projects-container {
+      min-height: 200px;
+      display: flex; flex-direction: column; gap: 1.4rem;
     }
     .project-card {
       background: var(--surface);
-      padding: 2rem; position: relative; overflow: hidden;
-      display: flex; flex-direction: column; gap: 1rem;
-      transition: background .3s;
-      min-height: 360px;
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      position: relative; overflow: hidden;
+      display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
+      transition: background .3s, border-color .3s, transform .3s;
+      min-height: 430px;
       cursor: none;
     }
     .project-card::before {
@@ -236,7 +237,59 @@
       transition: transform .4s ease;
     }
     .project-card:hover::before { transform: scaleX(1); }
-    .project-card:hover { background: var(--surface2); }
+    .project-card:hover {
+      background: var(--surface2);
+      border-color: rgba(245,197,24,0.28);
+      transform: translateY(-3px);
+    }
+    .project-card:nth-child(even) {
+      grid-template-columns: minmax(300px, .8fr) minmax(0, 1.2fr);
+    }
+    .project-card:nth-child(even) .project-content { order: 2; }
+    .project-card:nth-child(even) .project-visual { order: 1; border-left: 0; border-right: 1px solid var(--border); }
+    .project-content {
+      padding: 2rem;
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .project-visual {
+      border-left: 1px solid var(--border);
+      background:
+        linear-gradient(135deg, rgba(245,197,24,0.14), rgba(255,255,255,0.03)),
+        radial-gradient(circle at 75% 20%, rgba(245,197,24,0.18), transparent 34%);
+      padding: 1.5rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+      min-height: 100%;
+    }
+    .project-visual-mark {
+      font-size: clamp(4rem, 9vw, 7rem);
+      font-weight: 800; color: var(--gold);
+      line-height: .85; letter-spacing: 0;
+    }
+    .project-visual-label {
+      font-family: 'DM Mono', monospace; font-size: .62rem;
+      color: var(--muted); letter-spacing: .12em; text-transform: uppercase;
+      margin-top: .8rem; line-height: 1.6;
+    }
+    .project-highlight-list {
+      display: flex; flex-direction: column; gap: .6rem;
+      margin-top: 2rem;
+    }
+    .project-highlight {
+      display: flex; align-items: center; gap: .65rem;
+      font-family: 'DM Mono', monospace; font-size: .68rem;
+      color: #b8b8b8; line-height: 1.45;
+      padding: .7rem .75rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: .75rem;
+      background: rgba(0,0,0,0.16);
+    }
+    .project-highlight::before {
+      content: '';
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 10px rgba(245,197,24,.55);
+      flex-shrink: 0;
+    }
 
     .project-number {
       font-family: 'DM Mono', monospace; font-size: .65rem;
@@ -272,17 +325,6 @@
     .project-metric span {
       display: block; font-family: 'DM Mono', monospace; font-size: .58rem;
       color: var(--muted); letter-spacing: .08em; text-transform: uppercase;
-      line-height: 1.45;
-    }
-    .project-feature-preview {
-      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: .55rem;
-    }
-    .feature-pill {
-      font-family: 'DM Mono', monospace; font-size: .62rem;
-      color: #aaa; border: 1px solid var(--border);
-      background: rgba(245,197,24,0.04);
-      padding: .55rem .65rem; border-radius: .65rem;
       line-height: 1.45;
     }
     .project-footer {
@@ -327,10 +369,6 @@
     }
     .project-card:hover .project-tag { background: rgba(245,197,24,0.12); border-color: rgba(245,197,24,0.55); }
 
-    /* Loading / Error states */
-    #projects-container {
-      min-height: 200px; display: flex; align-items: center; justify-content: center;
-    }
     .loading-text {
       font-family: 'DM Mono', monospace; font-size: .8rem; color: var(--muted);
       letter-spacing: .1em;
@@ -587,18 +625,30 @@
       .hero-visual { min-height: 300px; }
       .contact-grid { grid-template-columns: 1fr; }
       #projects, #stack, #contact { padding: 4rem 1.5rem; }
+      .project-card,
+      .project-card:nth-child(even) {
+        grid-template-columns: 1fr;
+      }
+      .project-card:nth-child(even) .project-content,
+      .project-card:nth-child(even) .project-visual {
+        order: initial;
+      }
+      .project-visual,
+      .project-card:nth-child(even) .project-visual {
+        border-left: 0; border-right: 0; border-top: 1px solid var(--border);
+        min-height: 240px;
+      }
       .project-modal-hero { grid-template-columns: 1fr; }
       .project-modal-aside { min-height: 220px; border-right: 0; border-bottom: 1px solid var(--border); }
       footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
     }
 
     @media (max-width: 620px) {
-      .hero-stats, .project-metrics, .project-feature-preview, .features-grid {
+      .hero-stats, .project-metrics, .features-grid {
         grid-template-columns: 1fr;
       }
       .section-header { align-items: flex-start; flex-direction: column; gap: 1rem; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .project-card, .project-modal-main, .project-detail-body, .project-modal-aside {
+      .project-content, .project-visual, .project-modal-main, .project-detail-body, .project-modal-aside {
         padding: 1.35rem;
       }
     }
@@ -1196,8 +1246,7 @@
 
   function renderProjects() {
     const container = document.getElementById('projects-container');
-    container.innerHTML = '<div class="projects-grid" id="projects-grid"></div>';
-    const grid = document.getElementById('projects-grid');
+    container.innerHTML = '';
 
     PROJECTS.forEach((project, i) => {
       const card = document.createElement('article');
@@ -1207,22 +1256,30 @@
       card.setAttribute('aria-label', `Open ${project.name} project details`);
       card.dataset.projectId = project.id;
       card.innerHTML = `
-        <div class="project-top">
-          <div>
-            <div class="project-number">/ ${String(i+1).padStart(2,'0')}</div>
-            <div class="project-name">${project.name}</div>
+        <div class="project-content">
+          <div class="project-top">
+            <div>
+              <div class="project-number">/ ${String(i+1).padStart(2,'0')}</div>
+              <div class="project-name">${project.name}</div>
+            </div>
+            <div class="project-kicker">${project.timeline}<br>${project.role}</div>
           </div>
-          <div class="project-kicker">${project.timeline}<br>${project.role}</div>
+          <div class="project-desc">${project.summary}</div>
+          <div class="project-metrics">
+            ${project.metrics.map(m => `<div class="project-metric"><strong>${m.value}</strong><span>${m.label}</span></div>`).join('')}
+          </div>
+          ${buildTagsHTML(project.tags)}
+          ${buildFooterHTML(project.role, project.repo)}
         </div>
-        <div class="project-desc">${project.summary}</div>
-        <div class="project-metrics">
-          ${project.metrics.map(m => `<div class="project-metric"><strong>${m.value}</strong><span>${m.label}</span></div>`).join('')}
+        <div class="project-visual" aria-hidden="true">
+          <div>
+            <div class="project-visual-mark">${project.mark}</div>
+            <div class="project-visual-label">${project.name}<br>${project.role}</div>
+          </div>
+          <div class="project-highlight-list">
+            ${project.preview.map(item => `<div class="project-highlight">${item}</div>`).join('')}
+          </div>
         </div>
-        <div class="project-feature-preview">
-          ${project.preview.map(item => `<div class="feature-pill">${item}</div>`).join('')}
-        </div>
-        ${buildTagsHTML(project.tags)}
-        ${buildFooterHTML(project.role, project.repo)}
       `;
       card.addEventListener('click', (event) => {
         if (event.target.closest('a')) return;
@@ -1234,7 +1291,7 @@
           openProjectModal(project.id);
         }
       });
-      grid.appendChild(card);
+      container.appendChild(card);
     });
 
     animateReveal();
