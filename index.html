@@ -259,16 +259,6 @@
       padding: 1.5rem;
       display: flex; flex-direction: column; justify-content: space-between;
       min-height: 100%;
-      background-size: cover;
-      background-position: center;
-    }
-    .project-visual.has-image {
-      background-image:
-        linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.62)),
-        linear-gradient(90deg, rgba(0,0,0,0.5), rgba(0,0,0,0.08)),
-        var(--project-image);
-      justify-content: flex-end;
-      gap: 1rem;
     }
     .project-visual-mark {
       font-size: clamp(4rem, 9vw, 7rem);
@@ -280,24 +270,9 @@
       color: var(--muted); letter-spacing: .12em; text-transform: uppercase;
       margin-top: .8rem; line-height: 1.6;
     }
-    .project-visual.has-image .project-visual-label {
-      width: fit-content;
-      max-width: 100%;
-      color: #fff;
-      margin-top: 0;
-      padding: .65rem .8rem;
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: .8rem;
-      background: rgba(0,0,0,0.42);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 18px 45px rgba(0,0,0,0.22);
-    }
     .project-highlight-list {
       display: flex; flex-direction: column; gap: .6rem;
       margin-top: 2rem;
-    }
-    .project-visual.has-image .project-highlight-list {
-      margin-top: 0;
     }
     .project-highlight {
       display: flex; align-items: center; gap: .65rem;
@@ -307,12 +282,6 @@
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: .75rem;
       background: rgba(0,0,0,0.16);
-    }
-    .project-visual.has-image .project-highlight {
-      color: rgba(255,255,255,0.88);
-      border-color: rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.36);
-      backdrop-filter: blur(10px);
     }
     .project-highlight::before {
       content: '';
@@ -1193,7 +1162,6 @@
     {
       id: 'the-grid',
       mark: 'TG',
-      image: 'assets/the-grid-hero.png',
       name: 'The Grid',
       role: 'Client Frontend Platform',
       timeline: '2025 - Present',
@@ -1216,14 +1184,13 @@
     {
       id: 'farmsmart',
       mark: 'FS',
-      image: 'assets/farmsmart-dashboard.png',
       name: 'FarmSmart',
       role: 'Full-Stack Farm Operations Platform',
       timeline: '2025 - Present',
       summary: 'A full-stack farm operations platform for inventory tracking and crop lifecycle management, built with React, Spring Boot, PostgreSQL, Docker, and Render deployment.',
       tags: ['React', 'Spring Boot', 'PostgreSQL', 'Docker', 'Render'],
       repo: 'https://github.com/Erick-0-0-1/FarmSmart',
-      live: 'https://farm-smart-pi.vercel.app',
+      live: 'https://farm-smart-phi.vercel.app/dashboard',
       metrics: [
         { value: 'CI/CD', label: 'Automated Render deploys' },
         { value: 'Layered', label: 'Controller service repository' }
@@ -1277,26 +1244,6 @@
     `;
   }
 
-  function buildProjectVisualHTML(project) {
-    const imageStyle = project.image ? ` style="--project-image: url('${project.image}')"` : '';
-    const imageClass = project.image ? ' has-image' : '';
-    const introHTML = project.image
-      ? `<div class="project-visual-label">${project.name}<br>${project.role}</div>`
-      : `<div>
-          <div class="project-visual-mark">${project.mark}</div>
-          <div class="project-visual-label">${project.name}<br>${project.role}</div>
-        </div>`;
-
-    return `
-      <div class="project-visual${imageClass}"${imageStyle} aria-hidden="true">
-        ${introHTML}
-        <div class="project-highlight-list">
-          ${project.preview.map(item => `<div class="project-highlight">${item}</div>`).join('')}
-        </div>
-      </div>
-    `;
-  }
-
   function renderProjects() {
     const container = document.getElementById('projects-container');
     container.innerHTML = '';
@@ -1324,7 +1271,15 @@
           ${buildTagsHTML(project.tags)}
           ${buildFooterHTML(project.role, project.repo)}
         </div>
-        ${buildProjectVisualHTML(project)}
+        <div class="project-visual" aria-hidden="true">
+          <div>
+            <div class="project-visual-mark">${project.mark}</div>
+            <div class="project-visual-label">${project.name}<br>${project.role}</div>
+          </div>
+          <div class="project-highlight-list">
+            ${project.preview.map(item => `<div class="project-highlight">${item}</div>`).join('')}
+          </div>
+        </div>
       `;
       card.addEventListener('click', (event) => {
         if (event.target.closest('a')) return;
